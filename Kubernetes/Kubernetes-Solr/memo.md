@@ -23,3 +23,32 @@ Helm は Kubernetes の パッケージマネージャー
 - kubectl get pods
   - クラスター内の全てのPodの一覧を表示
   - 状態や名前、IPアドレスなどの基本情報を確認可能
+
+- kubectl exec -it my-deployment-6b567cdb75-2gkb8 -- /bin/bash
+
+## Podの停止方法
+
+### 1. 特定のpodを停止
+```bash
+kubectl delete pod <pod-name> -n <namespace>
+```
+
+### 2. ラベル指定でpodを停止
+```bash
+kubectl delete pod -l <label-key>=<label-value> -n <namespace>
+```
+
+### 3. デプロイメントのpodを停止（スケールダウン）
+```bash
+kubectl scale deployment <deployment-name> --replicas=0 -n <namespace>
+```
+
+### 4. namespace内の全podを停止
+```bash
+kubectl delete pods --all -n <namespace>
+```
+
+注意事項：
+- podを直接削除すると、デプロイメントやレプリカセットによって自動的に再作成される可能性があります
+- 本番環境では慎重に実行してください
+- `-n <namespace>`は省略可能です（デフォルトのnamespaceを使用する場合）
